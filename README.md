@@ -26,6 +26,13 @@ class TodoItem(models.Model):
 
 Run the following command:
 ```bash
-./manage.sh migrate
+./manage.sh makemigrations
+```
+
+You should see something similar to the following:
+```
+Migrations for 'todo':
+  todo/migrations/0001_initial.py
+    - Create model TodoItem
 ```
 
