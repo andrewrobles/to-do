@@ -83,3 +83,12 @@ Once you’re in the shell, explore the database API:
 ```
 
 Wait a minute. `<TodoItem: TodoItem object (1)>` isn’t a helpful representation of this object. Let’s fix that by editing the `TodoItem` model (in the ``code/todo/models.py`` file) and adding a `__str__()` method to `TodoItem`:
+
+```python
+from django.db import models
+
+class TodoItem(models.Model):
+    # ...
+    def __str__(self):
+        return self.text
+```
