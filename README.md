@@ -36,3 +36,48 @@ Migrations for 'todo':
     - Create model TodoItem
 ```
 
+Now, run **migrate** to create those model tables in your database:
+
+```bash
+./manage.sh migrate
+```
+
+### Playing with the API
+
+Now, let’s hop into the interactive Python shell and play around with the free API Django gives you. To invoke the Python shell, use this command:
+
+```bash
+./manage.sh shell
+```
+
+Once you’re in the shell, explore the database API:
+
+```python
+>>> from todo.models import TodoItem  # Import the model classes we just wrote.
+
+# No todo items are in the system yet.
+>>> TodoItem.objects.all()
+<QuerySet []>
+
+# Create a new TodoItem.
+>>> t = TodoItem(text="Go for a run", done=False)
+
+# Save the object into the database. You have to call save() explicitly.
+>>> t.save()
+
+# Now it has an ID.
+>>> t.id
+1
+
+# Access model field values via Python attributes.
+>>> q.text
+"Go for a run"
+
+# Change values by changing the attributes, then calling save().
+>>> q.text = "Go to the gym"
+>>> q.save()
+
+# objects.all() displays all the todo items in the database.
+>>> TodoItem.objects.all()
+<QuerySet [<TodoItem: TodoItem object (1)>]>
+```
