@@ -81,3 +81,5 @@ Once you’re in the shell, explore the database API:
 >>> TodoItem.objects.all()
 <QuerySet [<TodoItem: TodoItem object (1)>]>
 ```
+
+Wait a minute. `<TodoItem: TodoItem object (1)>` isn’t a helpful representation of this object. Let’s fix that by editing the `TodoItem` model (in the ``code/todo/models.py`` file) and adding a `__str__()` method to `TodoItem`:
