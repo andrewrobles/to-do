@@ -103,17 +103,29 @@ Run `./manage.sh shell` so that we can see if our `__str__()` method worked:
 <QuerySet [<TodoItem: Go to the gym>]>
 ```
 
-Let’s also add a custom method to this `code/todo/models.py`:
+Let’s update the contents of `code/todo/models.py` to:
 
 
 ```python
 from django.db import models
 
 class TodoItem(models.Model):
-    # ...
+    text = models.CharField(max_length=200)
+    done = models.BooleanField(default=False)
+
     @property
     def striked_text(self):
-        return ''.join([letter + '\u0336' for letter in self.text])
+        STRIKE_CHARACTER = '\u0336' 
+        new_text = ''
+        for letter in self.text:
+            new_text = new_text + letter + STRIKE_CHARACTER
+        return new_text
+    
+    def __str__(self):
+        if self.done == True:
+            return self.striked_text
+        else:
+            return self.text
 ```
 
 Save these changes and start a new Python interactive shell by running `./manage.sh shell` again:
