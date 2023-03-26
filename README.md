@@ -30,6 +30,13 @@ Run the following command:
 ./manage.sh makemigrations
 ```
 
+You should see something similar to the following:
+```
+Migrations for 'todo':
+  todo/migrations/0001_initial.py
+    - Create model TodoItem
+```
+
 By running **makemigrations**, you're telling Django that you've made some changes to your models (in this case, you've made new ones) and that you'd like the changes to be stored as a *migration*.
 
 Migrations are how Django stores changes to your models (and thus your database schema) - they're files on disk. You can read the migration for your model if you like; it's the file **todo/migrations/0001_initial.py**. Don't worry, you're not expected to read them every time Django makes one, but they're designed to be human-editable in case you want to manually tweak how Django changes things.
@@ -45,16 +52,23 @@ Now, run **migrate** again to create those model tables in your database:
 You should see something similar to the following:
 
 ```
-Migrations for 'todo':
-  todo/migrations/0001_initial.py
-    - Create model TodoItem
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, todo, sessions
+Running migrations:
+  Rendering model states... DONE
+  Applying todo.0001_initial... OK
 ```
 
-Now, run **migrate** to create those model tables in your database:
+The **migrate** command takes all the migrations that haven't been applied (Django tracks which ones are applied using a special table in your database called **django_migrations**) and runs them against your database - essentially, synchronizing the changes you made to your models with the schema in the database.
 
-```bash
-./manage.sh migrate
-```
+Migrations are very powerful and let you change your models over time, as you develop your project, without the need to delete your database or tables and make new ones - it specializes in upgrading your database live, without losing data. We’ll cover them in more depth in a later part of the tutorial, but for now, remember the three-step guide to making model changes:
+
+- Change your models (in `models.py`).
+- Run `python manage.py makemigrations` to create migrations for those changes
+- Run `python manage.py migrate` to apply those changes to the database.
+
+The reason that there are separate commands to make and apply migrations is because you’ll commit migrations to your version control system and ship them with your app; they not only make your development easier, they’re also usable by other developers and in production.
+
 
 ### Playing with the API
 
