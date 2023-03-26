@@ -1,19 +1,24 @@
 # How To Code a Todo List App
 
 
-### Requirements
-
-Download and install [Git](https://git-scm.com/downloads), [Visual Studio Code](https://code.visualstudio.com/), and [Docker Desktop](https://www.docker.com/). Once Docker Desktop is downloaded, make sure that it is running.
-
 ### Project Setup
+- Download and install [Git](https://git-scm.com/downloads), [Visual Studio Code](https://code.visualstudio.com/), and [Docker Desktop](https://www.docker.com/)
+- In a terminal window, run the following commands to download the project to your `Documents` folder:
 
-In a terminal window, run the following commands to download the project to your `Documents` folder:
-```bash
-cd ~/Documents
-git clone https://github.com/andrewrobles/todo.git
-```
+    ```bash
+    cd ~/Documents
+    git clone https://github.com/andrewrobles/todo.git
+    ```
 
-### Create the Todo Item
+- Open up the project in Visual Studio Code by drag by going to `File > Open` and navigating to `~/Documents/todo`
+- Open up a terminal window by going to `View > Terminal`
+- Start the project by running `docker-compose up` and opening the URL provided in the terminal output.
+
+### Create the TodoItem Model
+
+Now we'll define our TodoItem model - essentially, your database layout for how a todo item will be stored in memory.
+
+In our todo app, we'll create one model: `TodoItem` which has two fields: the `text` of the todo item and a `done` to tell whether the item has been completed or not.
 
 With the project opened up in Visual Studio Code, edit the `code/todo/models.py` file so that it looks like this:
 
