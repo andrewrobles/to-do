@@ -13,7 +13,7 @@ class TodoItem(models.Model):
         return new_text
     
     def __str__(self):
-        if self.done == False:
-            return self.text
-        else:
+        if self.done == True:
             return self.striked_text
+        else:
+            return self.text
