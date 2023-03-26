@@ -96,15 +96,15 @@ class TodoItem(models.Model):
 
 It’s important to add `__str__()` methods to your models, not only for your own convenience when dealing with the interactive prompt, but also because objects’ representations are used throughout Django’s automatically-generated admin.
 
-Run `./manage.sh shell` so that we can see if our `__str__()` method worked:
+Run `./manage.sh shell` again:
 
 ```python
+# Make sure our __str__() addition worked.
 >>> TodoItem.objects.all()
 <QuerySet [<TodoItem: Go to the gym>]>
 ```
 
 Let’s update the contents of `code/todo/models.py` to:
-
 
 ```python
 from django.db import models
@@ -133,17 +133,10 @@ Save these changes and start a new Python interactive shell by running `./manage
 ```python
 >>> from todo.models import TodoItem
 
-# Make sure our __str__() addition worked.
-
->>> TodoItem.objects.all()
-<QuerySet [<TodoItem: Go to the gym>]>
-
-# Django provides a rich database lookup API that's entirely driven by
-# keyword arguments.
->>> TodoItem.objects.filter(id=1)
-<QuerySet [<TodoItem: Go to the gym>]>
->>> TodoItem.objects.filter(text__startswith='Go')
-<QuerySet [<TodoItem: Go to the gym>]>
+# Make sure our custom method worked.
+>>> t = TodoItem.objects.get(id=1)
+>>> t.striked_text
+G̶o̶ ̶t̶o̶ ̶t̶h̶e̶ ̶g̶y̶m̶
 
 # Request an ID that doesn't exist, this will raise an exception.
 >>> TodoItem.objects.get(id=2)
@@ -151,16 +144,19 @@ Traceback (most recent call last):
     ...
 DoesNotExist: TodoItem matching query does not exist.
 
-# Make sure our custom method worked.
->>> t = TodoItem.objects.get(id=1)
->>> t.striked_text
-G̶o̶ ̶t̶o̶ ̶t̶h̶e̶ ̶g̶y̶m̶
-
 # Create three todo items. The create call constructs a new
 # TodoItem object, and saves to the database in one step
->>> TodoItem.create(text='Cook dinner', done=False)
+>>> TodoItem.create(text='Cook dinner', done=True)
 <TodoItem: Cook dinner>
->>> TodoItem.create(text='Take out the trash', done=False)
+>>> TodoItem.create(text='Take out the trash', done=True)
 <Choice: Take out the trash>
->>> TodoItem.create(text='Do laundry', done=False)
+
+# Another useful function is the ability to filter objects by its attributes:
+# First show all todo items
+>>> TodoItem.objects.all()
+<QuerySet [<TodoItem: G̶o̶ ̶t̶o̶ ̶g̶y̶m̶>, <TodoItem: Cook dinner>, <TodoItem: Take out the trash>]>
+
+# Filter todo items by those marked as done
+>>> TodoItem.filter(done=True)
+<QuerySet [<TodoItem: G̶o̶ ̶t̶o̶ ̶g̶y̶m̶>]>
 ```
