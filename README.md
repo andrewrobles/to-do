@@ -10,17 +10,16 @@
     git clone https://github.com/andrewrobles/todo.git
     ```
 
+- Enable auto save by going to `File > Auto Save`
 - Open up the project in Visual Studio Code by drag by going to `File > Open` and navigating to `~/Documents/todo`
 - Open up a terminal window by going to `View > Terminal`
 - Start the project by running `docker-compose up` and opening the URL provided in the terminal output.
 
 ### Create the TodoItem Model
 
-Now we'll define our TodoItem model - essentially, your database layout for how a todo item will be stored in memory.
+In the `code/todo/models.py` file we define all objects called `Models` - this is a place in which we will define our todo item.
 
-In our todo app, we'll create one model: `TodoItem` which has two fields: the `text` of the todo item and a `done` to tell whether the item has been completed or not.
-
-With the project opened up in Visual Studio Code, edit the `code/todo/models.py` file so that it looks like this:
+Let's open the `code/todo/models.py` in the code editor, remove everything from it, and write code like this:
 
 ```python
 from django.db import models
@@ -29,6 +28,19 @@ class TodoItem(models.Model):
     text = models.CharField(max_length=200)
     done = models.BooleanField(default=False)
 ```
+
+All lines starting with `from` or `import` are lines that add some bits from other files. So instead of copying and pasting the same things in every file, we can include some parts with `from ... import ...`.
+
+`class TodoItem(models.Model):` - this line defines our model.
+- `class` is a special keyword that indicates that we are defining an object.
+- `TodoItem` is the name of our model. We can give it a different name (but we must avoid special characters and whitespace). Always start a class name with an uppercase letter.
+- `models.Model` means that the TodoItem is a Django Model, so Django knows that it should be saved in the database.
+
+Now we define the properties we were talking about: `text` and `done`. To do that we need to define the type of each field (Is it text? A number? A date? A relation to another object, like User?)
+
+- `models.CharField` - this is how you define text with a limited number of characters.
+- `models.BooleanField` - this is for values that can either be `True` or `False`.
+
 
 Run the following command:
 ```bash
@@ -42,13 +54,13 @@ Migrations for 'todo':
     - Create model TodoItem
 ```
 
-By running **makemigrations**, you're telling Django that you've made some changes to your models (in this case, you've made new ones) and that you'd like the changes to be stored as a *migration*.
+By running `makemigrations`, you're telling Django that you've made some changes to your models (in this case, you've made new ones) and that you'd like the changes to be stored as a *migration*.
 
-Migrations are how Django stores changes to your models (and thus your database schema) - they're files on disk. You can read the migration for your model if you like; it's the file **todo/migrations/0001_initial.py**. Don't worry, you're not expected to read them every time Django makes one, but they're designed to be human-editable in case you want to manually tweak how Django changes things.
+Migrations are how Django stores changes to your models (and thus your database schema) - they're files on disk. You can read the migration for your model if you like; it's the file `todo/migrations/0001_initial.py`. Don't worry, you're not expected to read them every time Django makes one, but they're designed to be human-editable in case you want to manually tweak how Django changes things.
 
-There's a command that will run the migrations for you and manage your database schema automatically - that's called **migrate**.
+There's a command that will run the migrations for you and manage your database schema automatically - that's called `migrate`.
 
-Now, run **migrate** again to create those model tables in your database:
+Now, run `migrate` again to create those model tables in your database:
 
 ```bash
 ./manage.sh migrate
@@ -64,16 +76,13 @@ Running migrations:
   Applying todo.0001_initial... OK
 ```
 
-The **migrate** command takes all the migrations that haven't been applied (Django tracks which ones are applied using a special table in your database called **django_migrations**) and runs them against your database - essentially, synchronizing the changes you made to your models with the schema in the database.
+The `migrate` command takes all the migrations that haven't been applied (Django tracks which ones are applied using a special table in your database called `django_migrations`) and runs them against your database - essentially, synchronizing the changes you made to your models with the schema in the database.
 
-Migrations are very powerful and let you change your models over time, as you develop your project, without the need to delete your database or tables and make new ones - it specializes in upgrading your database live, without losing data. We’ll cover them in more depth in a later part of the tutorial, but for now, remember the three-step guide to making model changes:
+If you ever want to make future changes to your `models.py` file again, remember the three-step guide to making model changes:
 
 - Change your models (in `models.py`).
 - Run `python manage.py makemigrations` to create migrations for those changes
 - Run `python manage.py migrate` to apply those changes to the database.
-
-The reason that there are separate commands to make and apply migrations is because you’ll commit migrations to your version control system and ship them with your app; they not only make your development easier, they’re also usable by other developers and in production.
-
 
 ### Playing with the API
 
