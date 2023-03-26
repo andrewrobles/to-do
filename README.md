@@ -96,6 +96,13 @@ class TodoItem(models.Model):
 
 It’s important to add `__str__()` methods to your models, not only for your own convenience when dealing with the interactive prompt, but also because objects’ representations are used throughout Django’s automatically-generated admin.
 
+Run `./manage.sh shell` so that we can see if our `__str__()` method worked:
+
+```python
+>>> TodoItem.objects.all()
+<QuerySet [<TodoItem: Go to the gym>]>
+```
+
 Let’s also add a custom method to this `code/todo/models.py`:
 
 

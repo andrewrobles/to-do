@@ -6,7 +6,14 @@ class TodoItem(models.Model):
 
     @property
     def striked_text(self):
-        return ''.join([letter + '\u0336' for letter in self.text])
+        STRIKE_CHARACTER = '\u0336' 
+        new_text = ''
+        for letter in self.text:
+            new_text = new_text + letter + STRIKE_CHARACTER
+        return new_text
     
     def __str__(self):
-        return self.text if not self.done else self.striked_text
+        if self.done == False:
+            return self.text
+        else:
+            return self.striked_text
